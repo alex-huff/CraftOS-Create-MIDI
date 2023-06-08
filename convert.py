@@ -1,4 +1,4 @@
-from mido import MidiFile, tick2second, second2tick
+from mido import MidiFile, tick2second
 import sys
 
 header =\
