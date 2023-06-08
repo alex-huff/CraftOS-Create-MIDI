@@ -60,10 +60,12 @@ for i, track in enumerate(midiFile.tracks):
             relevantMessages.append([msg.type, absoluteTime, msg.note])
 
 # list.sort() is stable
+relevantMessages.sort(key=lambda k: k[0])
 relevantMessages.sort(key=lambda k: k[2])
 relevantMessages.sort(key=lambda k: k[1])
 # now all simultaneous release and press of same note are next to each other in list
-for i, message in enumerate(relevantMessages, 1):
+for i in range(1, len(relevantMessages)):
+    message = relevantMessages[i]
     previousMessage = relevantMessages[i - 1]
     if previousMessage[0] == 'note_off' and message[0] == 'note_on' and previousMessage[2] == message[2] and previousMessage[1] == message[1]:
         # find previous pressing of this note, measure the delta time, and move back the note release
