@@ -5,6 +5,12 @@ header =\
 """
 notes = { "f#-1", "g", "g#", "a", "a#", "b", "c", "c#", "d", "d#", "e", "f", "f#-2" }
 noteToIDMap = { {}, {}, {} }
+visualizerID = rednet.lookup("visual", "visualizer")
+if (visualizerID == nil)
+then
+    print("No valid controller found for visualizer")
+    nonExistantFunctionCallToTerminateEarly()
+end
 for i=1,3 do
     proto = "octave-" .. i
     for n, note in ipairs(notes) do
@@ -26,6 +32,8 @@ function releaseNote(octave, note)
 end
 function updatePipe(state, octave, note)
     rednet.send(noteToIDMap[octave][note], state, "octave-" .. octave)
+    message = { note, octave, state }
+    rednet.send(visualizerID, message, "visual")
 end
 """
 pitches = [ 'a', 'a#', 'b', 'c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#' ]
