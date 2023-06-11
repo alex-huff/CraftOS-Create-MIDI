@@ -1,25 +1,10 @@
 
-notes = { "f#-1", "g", "g#", "a", "a#", "b", "c", "c#", "d", "d#", "e", "f", "f#-2" }
-noteToIDMap = { {}, {}, {} }
-visualizerID = rednet.lookup("visual", "visualizer")
-if (visualizerID == nil)
+controllerID = rednet.lookup("player", "controller")
+if (controllerID == nil)
 then
-    print("No valid controller found for visualizer")
+    print("Could not find controller computer")
     nonExistantFunctionCallToTerminateEarly()
 end
-for i=1,3 do
-    proto = "octave-" .. i
-    for n, note in ipairs(notes) do
-        controllerID = rednet.lookup(proto, note)
-        if (controllerID == nil)
-        then
-            print("No valid controller found for octave " .. i .. " and note " .. note)
-            nonExistantFunctionCallToTerminateEarly()
-        end
-        noteToIDMap[i][note] = controllerID
-    end
-end
-
 function pressNote(octave, note)
     updatePipe(true, octave, note)
 end
@@ -27,9 +12,8 @@ function releaseNote(octave, note)
     updatePipe(false, octave, note)
 end
 function updatePipe(state, octave, note)
-    rednet.send(noteToIDMap[octave][note], state, "octave-" .. octave)
     message = { note, octave, state }
-    rednet.send(visualizerID, message, "visual")
+    rednet.send(controllerID, message, "player")
 end
 
 pressNote(2, "d")
