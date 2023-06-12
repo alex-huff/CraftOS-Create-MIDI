@@ -11,17 +11,23 @@ On the back of the organ, there are 3 rows containing 13 computers. We must firs
 Go into every one of these 39 computers and run the following commands (replacing `<note>` and `<octave>` with that computer's corresponding note and octave):
 ```sh
 set note <note>
+```
+```sh
 set octave <octave>
+```
+```sh
 wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scripts/noteControllers/startup.lua
 ```
 
 Now, reboot each of the computers and right click the modems so that they are connected to the network.
 
-We can now configure the controller computer. This computer directly talks to all the individual note controllers and outputs a visual of what note are currently being played. The controller computer is under the 3x4 monitor and has a modem coming of the back of it.
+We can now configure the controller computer. This computer directly talks to all the individual note controllers and outputs a visual of what notes are currently being played. The controller computer is under the 3x4 monitor and has a modem coming of the back of it.
 
 Run the following commands on the controller computer:
 ```sh
 wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scripts/controller/controller.lua
+```
+```sh
 wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scripts/controller/startup.lua
 ```
 
@@ -32,6 +38,8 @@ In order to manually play the organ, we must have a mouse listener computer that
 To configure the mouse listener, run the following commands:
 ```sh
 wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scripts/mouseListener/mouse.lua
+```
+```sh
 wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scripts/mouseListener/startup.lua
 ```
 
@@ -39,9 +47,11 @@ Now, reboot the mouse listener computer and right click its modem so that it's c
 
 The last computer we need to configure is the player computer. This is the computer with disk drives next to it. It is responsible for running scripts that tell the controller how to play a song.
 
-To set up the controller computer, run the following commands:
+To set up the player computer, run the following commands:
 ```sh
 wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scripts/player/setAll.lua
+```
+```sh
 wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scripts/player/startup.lua
 ```
 
@@ -53,6 +63,8 @@ You can play songs by downloading lua scripts onto the player computer, and then
 For example, to play Carol of the Bells, we can run the following commands:
 ```sh
 wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/songs/carol-of-the-bells.lua
+```
+```sh
 carol-of-the-bells
 ```
 
@@ -75,7 +87,7 @@ To convert a file, run
 python convert.py song-name.mid > song-name.lua
 ```
 
-Now you can upload this file to pastebin, and download it on the controlling computer by running (replacing `<code>` and `<filename>` with the pastebin code and the song name):
+Now you can upload this file to pastebin, and download it on the player computer by running (replacing `<code>` and `<filename>` with the pastebin code and the song name):
 
 ```sh
 pastebin get <code> <filename>
