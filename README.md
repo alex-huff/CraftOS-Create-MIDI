@@ -13,7 +13,7 @@ https://github.com/alex-huff/CraftOS-Create-MIDI/assets/38389408/95109e47-d64e-4
 ## Usage
 Build the organ in your world using one of the provided schematics. Both [Litematica](https://github.com/maruohon/litematica) and [Create](https://github.com/Creators-of-Create/Create) compatible schematics can be found [here](https://github.com/alex-huff/CraftOS-Create-MIDI/tree/master/schematics).
 
-After building the organ in your world, you much configure all of the computers so they can communicate with each other properly.
+After building the organ in your world, you must configure all of the computers so they can communicate with each other properly.
 
 On the back of the organ, there are 3 rows containing 13 computers. We must first configure each of these 39 computers so that they know which note/octave they are responsible for controlling. The topmost row is octave 3, the middlemost row is octave 2, and the bottom row is octave 1. When facing the front of the computers (the side with the modem), starting from the leftmost column, the 13 columns correspond to the notes `f#-1, g, g#, a, a#, b, c, c#, d, d#, e, f, f#-2` respectively.
 
