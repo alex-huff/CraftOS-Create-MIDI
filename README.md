@@ -1,6 +1,15 @@
 # CraftOS-Create-MIDI
 Converts MIDI files to a lua script that can be used to control a [Create](https://github.com/Creators-of-Create/Create) organ with [ComputerCraft](https://github.com/dan200/ComputerCraft).
 
+## In Action
+### Manual
+
+https://github.com/alex-huff/CraftOS-Create-MIDI/assets/38389408/ad6e5cb9-c67c-4ff7-9ef1-43b7c2f611ee
+
+### Automatic
+
+https://github.com/alex-huff/CraftOS-Create-MIDI/assets/38389408/95109e47-d64e-4eac-8b07-7735a01ba859
+
 ## Usage
 Build the organ in your world using one of the provided schematics. Both [Litematica](https://github.com/maruohon/litematica) and [Create](https://github.com/Creators-of-Create/Create) compatible schematics can be found [here](https://github.com/alex-huff/CraftOS-Create-MIDI/tree/master/schematics).
 
