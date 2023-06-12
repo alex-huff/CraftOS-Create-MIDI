@@ -57,7 +57,7 @@ carol-of-the-bells
 ```
 
 ## Custom Songs
-To play custom songs, clone this repo (on your actual computer) and install the requirements by running
+To play custom songs, clone this repo (on your actual computer) and install the requirements by running:
 ```sh
 git clone https://github.com/alex-huff/CraftOS-Create-MIDI.git && cd CraftOS-Create-MIDI
 ```
@@ -75,7 +75,7 @@ To convert a file, run
 python convert.py song-name.mid > song-name.lua
 ```
 
-Now you can upload this file to pastebin, and download it on the controlling computer by running
+Now you can upload this file to pastebin, and download it on the controlling computer by running (replacing `<code>` and `<filename>` with the pastebin code and the song name):
 
 ```sh
 pastebin get <code> <filename>
