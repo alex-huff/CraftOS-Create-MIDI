@@ -32,6 +32,7 @@ noteStemWidth = 6
 noteBaseHeight = 6
 noteStemHeight = 11
 noteHeight = noteBaseHeight + noteStemHeight
+topOverhang = 1
 width, height = term.getSize()
 function getNoteFromTouch(x, y)
     if (y <= yOuterMargin or y >= (height - (yOuterMargin - 1)))
@@ -50,16 +51,16 @@ function getNoteFromTouch(x, y)
     octave = 3 - math.floor((y - (yOuterMargin + 1)) / (noteHeight + yInnerMargin))
     if (yRemainder >= noteStemHeight)
     then
-        if (x <= (xMargin + noteStemWidth - 1) or x >= (width - (xMargin + 1)))
+        if (x <= (xMargin + noteStemWidth - topOverhang) or x >= (width - (xMargin + topOverhang)))
         then
             return nil, nil
         end
-        xRemainder = (x - (xMargin + noteStemWidth)) % (noteBaseWidth + 1)
+        xRemainder = (x - (xMargin + noteStemWidth - (topOverhang - 1))) % (noteBaseWidth + 1)
         if (xRemainder == noteBaseWidth)
         then
             return nil, nil
         end
-        note = baseTilePosToNote[1 + math.floor((x - (xMargin + noteStemWidth)) / (noteBaseWidth + 1))]
+        note = baseTilePosToNote[1 + math.floor((x - (xMargin + noteStemWidth - (topOverhang - 1))) / (noteBaseWidth + 1))]
     else
         xRemainder = (x - (xMargin + 1)) % (noteStemWidth + 1)
         if (xRemainder == noteStemWidth)

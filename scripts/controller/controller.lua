@@ -58,12 +58,13 @@ noteStemWidth = 6
 noteBaseHeight = 6
 noteStemHeight = 11
 noteHeight = noteBaseHeight + noteStemHeight
+topOverhang = 1
 function updateNote(note, octave, pressed)
     tilePos = noteToTilePos[note]
     noteBasePos = noteLayout[tilePos + 1]
     if (pressed)
     then
-        color = colors.blue     
+        color = colors.blue
     elseif (noteBasePos == -1)
     then
         color = colors.gray
@@ -85,7 +86,7 @@ function updateNote(note, octave, pressed)
     end
     if (noteBasePos ~= -1)
     then
-        startX = xMargin + 1 + (noteStemWidth - 1) + noteBasePos * (noteBaseWidth + 1)
+        startX = xMargin + 1 + (noteStemWidth - topOverhang) + noteBasePos * (noteBaseWidth + 1)
         startY = endY + 1 
         endX = startX + (noteBaseWidth - 1)
         endY = startY + (noteBaseHeight - 1)
@@ -131,7 +132,7 @@ do
     if (incomingProto == playerProto)
     then
         state = message[3]
-        updateNote(note, octave, state)   
+        updateNote(note, octave, state)
         setNoteState(note, octave, state)
         updateOrgan(note, octave, state)
     elseif (incomingProto == mouseProto)
