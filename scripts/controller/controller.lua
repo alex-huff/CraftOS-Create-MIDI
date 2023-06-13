@@ -63,7 +63,7 @@ function updateNote(note, octave, pressed)
     noteBasePos = noteLayout[tilePos + 1]
     if (pressed)
     then
-        color = colors.blue
+        color = colors.blue     
     elseif (noteBasePos == -1)
     then
         color = colors.gray
@@ -79,6 +79,10 @@ function updateNote(note, octave, pressed)
         endY = endY - 1
     end
     paintutils.drawFilledBox(startX, startY, endX, endY, color)
+    if (tilePos == 5)
+    then
+        paintutils.drawFilledBox(endX, endY, endX, endY, colors.gray)
+    end
     if (noteBasePos ~= -1)
     then
         startX = xMargin + 1 + (noteStemWidth - 1) + noteBasePos * (noteBaseWidth + 1)
@@ -86,6 +90,10 @@ function updateNote(note, octave, pressed)
         endX = startX + (noteBaseWidth - 1)
         endY = startY + (noteBaseHeight - 1)
         paintutils.drawFilledBox(startX, startY, endX, endY, color)
+        if (tilePos == 6)
+        then
+            paintutils.drawFilledBox(startX, startY, startX, startY, colors.gray)
+        end
     end
 end
 function setNoteState(note, octave, state)
@@ -123,7 +131,7 @@ do
     if (incomingProto == playerProto)
     then
         state = message[3]
-        updateNote(note, octave, state)
+        updateNote(note, octave, state)   
         setNoteState(note, octave, state)
         updateOrgan(note, octave, state)
     elseif (incomingProto == mouseProto)
