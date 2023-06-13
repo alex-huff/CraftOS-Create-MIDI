@@ -4,11 +4,11 @@ Converts MIDI files to a lua script that can be used to control a [Create](https
 ## In Action
 ### Manual
 
-https://github.com/alex-huff/CraftOS-Create-MIDI/assets/38389408/ad6e5cb9-c67c-4ff7-9ef1-43b7c2f611ee
+https://github.com/alex-huff/CraftOS-Create-MIDI/assets/38389408/b72f5661-4f7c-4f66-b388-5543a51a154a
 
 ### Automatic
 
-https://github.com/alex-huff/CraftOS-Create-MIDI/assets/38389408/95109e47-d64e-4eac-8b07-7735a01ba859
+https://github.com/alex-huff/CraftOS-Create-MIDI/assets/38389408/d2fb3f7f-882c-4990-a83a-5cc3d609b9f2
 
 ## Usage
 Build the organ in your world using one of the provided schematics. Both [Litematica](https://github.com/maruohon/litematica) and [Create](https://github.com/Creators-of-Create/Create) compatible schematics can be found [here](https://github.com/alex-huff/CraftOS-Create-MIDI/tree/master/schematics).
