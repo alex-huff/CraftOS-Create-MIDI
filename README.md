@@ -30,7 +30,7 @@ wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scri
 
 Now, reboot each of the computers and right click the modems so that they are connected to the network.
 
-We can now configure the controller computer. This computer directly talks to all the individual note controllers and outputs a visual of what notes are currently being played. The controller computer is under the 3x4 monitor and has a modem coming of the back of it.
+We can now configure the controller computer. This computer directly talks to all the individual note controllers and outputs a visual of what notes are currently being played. The controller computer is under the monitor and has a modem coming of the back of it.
 
 Run the following commands on the controller computer:
 ```sh
@@ -42,7 +42,7 @@ wget https://raw.githubusercontent.com/alex-huff/CraftOS-Create-MIDI/master/scri
 
 Now, reboot the controller computer and right click its modem so that it's connected to the network.
 
-In order to manually play the organ, we must have a mouse listener computer that observes when a player right clicks on the monitor. The other computer under the 3x4 monitor is the mouse listener (modem is on its bottom side).
+In order to manually play the organ, we must have a mouse listener computer that observes when a player right clicks on the monitor. The other computer under the monitor is the mouse listener (modem is on its bottom side).
 
 To configure the mouse listener, run the following commands:
 ```sh
@@ -93,7 +93,7 @@ A great source of compatible MIDI files is [Online Sequencer](https://onlinesequ
 To convert a file, run
 
 ```sh
-python convert.py song-name.mid > song-name.lua
+python convert.py midi-file.mid > song-name.lua
 ```
 
 Now you can upload this file to pastebin, and download it on the player computer by running (replacing `<code>` and `<filename>` with the pastebin code and the song name):
