@@ -1,2 +1,2 @@
 rednet.open("bottom")
-shell.openTab("mouse.lua")
+shell.openTab("monitor top mouse.lua")

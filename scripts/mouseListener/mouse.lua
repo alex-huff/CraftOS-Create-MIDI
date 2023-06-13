@@ -1,61 +1,89 @@
-noteToTilePos =
-{
-    ["f#-1"] = 12,
-    ["g"]    = 11,
-    ["g#"]   = 10,
-    ["a"]    = 9,
-    ["a#"]   = 8,
-    ["b"]    = 7,
-    ["c"]    = 6,
-    ["c#"]   = 5,
-    ["d"]    = 4,
-    ["d#"]   = 3,
-    ["e"]    = 2,
-    ["f"]    = 1,
-    ["f#-2"] = 0
-}
 tilePosToNote =
 {
-    "f#-2",
-    "f",
-    "e",
-    "d#",
-    "d",
-    "c#",
-    "c",
-    "b",
-    "a#",
-    "a",
-    "g#",
+    "f#-1",
     "g",
-    "f#-1"   
+    "g#",
+    "a",
+    "a#",
+    "b",
+    "c",
+    "c#",
+    "d",
+    "d#",
+    "e",
+    "f",
+    "f#-2"
 }
+baseTilePosToNote =
+{
+    "g",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f"
+}
+xMargin = 5
+yOuterMargin = 5
+yInnerMargin = 3
+noteBaseWidth = 11
+noteStemWidth = 6
+noteBaseHeight = 6
+noteStemHeight = 11
+noteHeight = noteBaseHeight + noteStemHeight
+width, height = term.getSize()
+function getNoteFromTouch(x, y)
+    if (y <= yOuterMargin or y >= (height - (yOuterMargin - 1)))
+    then
+        return nil, nil
+    end
+    if (x <= xMargin or x >= (width - (xMargin - 1)))
+    then
+        return nil, nil
+    end
+    yRemainder = (y - (yOuterMargin + 1)) % (noteHeight + yInnerMargin)
+    if (yRemainder >= noteHeight)
+    then
+        return nil, nil
+    end
+    octave = 3 - math.floor((y - (yOuterMargin + 1)) / (noteHeight + yInnerMargin))
+    if (yRemainder >= noteStemHeight)
+    then
+        if (x <= (xMargin + noteStemWidth - 1) or x >= (width - (xMargin + 1)))
+        then
+            return nil, nil
+        end
+        xRemainder = (x - (xMargin + noteStemWidth)) % (noteBaseWidth + 1)
+        if (xRemainder == noteBaseWidth)
+        then
+            return nil, nil
+        end
+        note = baseTilePosToNote[1 + math.floor((x - (xMargin + noteStemWidth)) / (noteBaseWidth + 1))]
+    else
+        xRemainder = (x - (xMargin + 1)) % (noteStemWidth + 1)
+        if (xRemainder == noteStemWidth)
+        then
+            return nil, nil
+        end
+        note = tilePosToNote[1 + math.floor((x - (xMargin + 1)) / (noteStemWidth + 1))]
+        if (#note > 1 and yRemainder == (noteStemHeight - 1))
+        then
+            return nil, nil
+        end
+    end
+    return note, octave
+end
 proto = "mouse"
 rednet.open("bottom")
 controllerID = rednet.lookup(proto, "controller")
 while true
 do
     event, side, x, y = os.pullEvent("monitor_touch")
-    if (x % 2 == 1 and not (x <= 2 or x >= 28))
+    note, octave = getNoteFromTouch(x, y)
+    if (note ~= nil and octave ~= nil)
     then
-        tileNum = (x - 1) / 2
-        if (y >= 3 and y <= 8)
-        then
-            octave = 3
-        elseif (y >= 11 and y <= 16)
-        then
-            octave = 2
-        elseif (y >= 19 and y <= 25)
-        then
-            octave = 1
-        else
-            octave = 0
-        end
-        if (octave ~= 0)
-        then
-            note = tilePosToNote[tileNum]
-            message = { note, octave } 
-            rednet.send(controllerID, message, proto)
-        end     
+        message = { note, octave }
+        rednet.send(controllerID, message, proto)
     end
 end

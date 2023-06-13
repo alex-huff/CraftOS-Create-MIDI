@@ -11,66 +11,82 @@ for i=1,3 do
         end
         noteToID[i][note] = controllerID
     end
-end        
+end
+peripheral.wrap("top").setTextScale(.5)
 term.setCursorPos(0, 0)
 term.setCursorBlink(false)
 term.setBackgroundColor(colors.black)
 term.clear()
-width = 29
-height = 26
 noteToTilePos =
 {
-    ["f#-1"] = 12,
-    ["g"]    = 11,
-    ["g#"]   = 10,
-    ["a"]    = 9,
-    ["a#"]   = 8,
-    ["b"]    = 7,
+    ["f#-1"] = 0,
+    ["g"]    = 1,
+    ["g#"]   = 2,
+    ["a"]    = 3,
+    ["a#"]   = 4,
+    ["b"]    = 5,
     ["c"]    = 6,
-    ["c#"]   = 5,
-    ["d"]    = 4,
-    ["d#"]   = 3,
-    ["e"]    = 2,
-    ["f"]    = 1,
-    ["f#-2"] = 0
+    ["c#"]   = 7,
+    ["d"]    = 8,
+    ["d#"]   = 9,
+    ["e"]    = 10,
+    ["f"]    = 11,
+    ["f#-2"] = 12
 }
-tilePosToNote =
+noteLayout =
 {
-    "f#-2",
-    "f",
-    "e",
-    "d#",
-    "d",
-    "c#",
-    "c",
-    "b",
-    "a#",
-    "a",
-    "g#",
-    "g",
-    "f#-1"   
+    -1,
+    0,
+    -1,
+    1,
+    -1,
+    2,
+    3,
+    -1,
+    4,
+    -1,
+    5,
+    6,
+    -1
 }
 notes = {}
+xMargin = 5
+yOuterMargin = 5
+yInnerMargin = 3
+noteBaseWidth = 11
+noteStemWidth = 6
+noteBaseHeight = 6
+noteStemHeight = 11
+noteHeight = noteBaseHeight + noteStemHeight
 function updateNote(note, octave, pressed)
+    tilePos = noteToTilePos[note]
+    noteBasePos = noteLayout[tilePos + 1]
     if (pressed)
     then
         color = colors.blue
-        textColor = colors.toBlit(colors.white)     
+    elseif (noteBasePos == -1)
+    then
+        color = colors.gray
     else
         color = colors.white
-        textColor = colors.toBlit(colors.gray)
     end
-    startX = 3 + noteToTilePos[note] * 2
-    startY = 3 + (3 - octave) * 8
-    paintutils.drawBox(startX, startY, startX, startY + 5, color)
-    term.setCursorPos(startX, startY + 2)
-    backgroundColor = colors.toBlit(color)
-    term.blit(string.sub(note, 1, 1), textColor, backgroundColor)
-    if (#note > 1)
+    startX = xMargin + 1 + tilePos * (noteStemWidth + 1)
+    startY = yOuterMargin + 1 + (3 - octave) * (noteHeight + yInnerMargin)
+    endX = startX + (noteStemWidth - 1)
+    endY = startY + (noteStemHeight - 1)
+    if (noteBasePos == -1)
     then
-        term.setCursorPos(startX, startY + 3)
-        term.blit(string.sub(note, 2, 2), textColor, backgroundColor)
-    end    
+        endY = endY - 1
+    end
+    paintutils.drawFilledBox(startX, startY, endX, endY, color)
+    if (noteBasePos ~= -1)
+    then
+        startX = xMargin + 1 + (noteStemWidth - 1) + noteBasePos * (noteBaseWidth + 1)
+        startY = endY + 1 
+        endX = startX + (noteBaseWidth - 1)
+        endY = startY + (noteBaseHeight - 1)
+        paintutils.drawFilledBox(startX, startY, endX, endY, color)
+    end
 end
 function setNoteState(note, octave, state)
     notes[(octave - 1) * 13 + noteToTilePos[note]] = state
@@ -91,6 +107,7 @@ do
     do
         updateNote(note, octave, false)
         setNoteState(note, octave, false)
+        updateOrgan(note, octave, false)
     end
 end
 playerProto = "player"
@@ -103,12 +120,10 @@ do
     senderID, message, incomingProto = rednet.receive()
     note = message[1]
     octave = message[2]
-    term.setCursorPos(1, 10)
-    term.setBackgroundColor(colors.black)
     if (incomingProto == playerProto)
     then
         state = message[3]
-        updateNote(note, octave, state)   
+        updateNote(note, octave, state)
         setNoteState(note, octave, state)
         updateOrgan(note, octave, state)
     elseif (incomingProto == mouseProto)
