@@ -23,8 +23,8 @@ end
 pitches = [ 'a', 'a#', 'b', 'c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#' ]
 
 def midiNoteToCreatePitch(note):
-    if note == 78: return 'f#-2'
     pitch = pitches[(note - 9) % 12]
+    if pitch == 'f#' and note >= 78: return 'f#-2'
     return 'f#-1' if pitch == 'f#' else pitch
 
 def midiNoteToCreateOctave(note):
