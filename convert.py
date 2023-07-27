@@ -2,7 +2,7 @@ from mido import MidiFile, tick2second
 import sys
 
 header =\
-"""
+    """
 controllerID = rednet.lookup("player", "controller")
 if (controllerID == nil)
 then
@@ -20,23 +20,31 @@ function updatePipe(state, octave, note)
     rednet.send(controllerID, message, "player")
 end
 """
-pitches = [ 'a', 'a#', 'b', 'c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#' ]
+pitches = ['a', 'a#', 'b', 'c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#']
+
 
 def midiNoteToCreatePitch(note):
     pitch = pitches[(note - 9) % 12]
-    if pitch == 'f#' and note >= 78: return 'f#-2'
+    if pitch == 'f#' and note >= 78:
+        return 'f#-2'
     return 'f#-1' if pitch == 'f#' else pitch
+
 
 def midiNoteToCreateOctave(note):
     return int((note - 42) / 12) + 1
 
+
 def clamp(val, minVal, maxVal):
-    if val < minVal: return minVal
-    if val > maxVal: return maxVal
+    if val < minVal:
+        return minVal
+    if val > maxVal:
+        return maxVal
     return val
+
 
 def midiNoteToCreateNote(note):
     return (clamp(midiNoteToCreateOctave(note), 1, 3), midiNoteToCreatePitch(note))
+
 
 midiFile = MidiFile(sys.argv[1])
 relevantMessages = []
@@ -49,7 +57,9 @@ for i, track in enumerate(midiFile.tracks):
         if msg.type == 'set_tempo':
             relevantMessages.append([msg.type, absoluteTime, msg.tempo])
         if msg.type == 'note_on' or msg.type == 'note_off':
-            relevantMessages.append([msg.type, absoluteTime, msg.note])
+            wasPress = msg.type == 'note_on' and msg.velocity > 0
+            relevantMessages.append(
+                ['note_on' if wasPress else 'note_off', absoluteTime, msg.note])
 
 # list.sort() is stable
 relevantMessages.sort(key=lambda k: k[0])
@@ -77,10 +87,11 @@ lastAbsoluteTime = 0
 for messageType, absoluteTime, value in relevantMessages:
     deltaTicks = absoluteTime - lastAbsoluteTime
     if deltaTicks != 0:
-        print(f'sleep({tick2second(deltaTicks, midiFile.ticks_per_beat, currentTempo)})')
+        print(
+            f'sleep({tick2second(deltaTicks, midiFile.ticks_per_beat, currentTempo)})')
     lastAbsoluteTime = absoluteTime
     if messageType == 'set_tempo':
         currentTempo = value
         continue
     octave, note = midiNoteToCreateNote(value)
-    print(('press' if messageType == 'note_on' else 'release') + f'Note({octave}, "{note}")')
+    print(f'{"press" if messageType == "note_on" else "release"}Note({octave}, "{note}")')
